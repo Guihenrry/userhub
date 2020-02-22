@@ -27,7 +27,11 @@ export default function Routes() {
           name="Main"
           component={Main}
         />
-        <Stack.Screen name="User" component={User} />
+        <Stack.Screen
+          name="User"
+          component={User}
+          options={({ route }) => ({ title: route.params.user.name })}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
