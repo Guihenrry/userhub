@@ -21,6 +21,8 @@ export default class User extends Component {
   state = {
     stars: [],
     loading: false,
+    page: 1,
+    refreshing: false,
   };
 
   static propTypes = {
@@ -47,11 +49,38 @@ export default class User extends Component {
     this.setState({ stars: response.data, loading: false });
   }
 
+  loadMore = async () => {
+    const { route } = this.props;
+    const { user } = route.params;
+    const { page, stars } = this.state;
+
+    const response = await api.get(`/users/${user.login}/starred`, {
+      params: {
+        page: page + 1,
+      },
+    });
+
+    if (response.data) {
+      this.setState({ page: page + 1, stars: [...stars, ...response.data] });
+    }
+  };
+
+  refreshList = async () => {
+    const { route } = this.props;
+    const { user } = route.params;
+
+    this.setState({ refreshing: true });
+
+    const response = await api.get(`/users/${user.login}/starred`);
+
+    this.setState({ stars: response.data, refreshing: false });
+  };
+
   render() {
     const { route } = this.props;
     const { user } = route.params;
 
-    const { stars, loading } = this.state;
+    const { stars, loading, refreshing } = this.state;
 
     return (
       <Container>
@@ -67,6 +96,9 @@ export default class User extends Component {
           <Stars
             data={stars}
             KeyExtractor={star => String(star.id)}
+            onEndReached={this.loadMore}
+            onRefresh={this.refreshList}
+            refreshing={refreshing}
             renderItem={({ item }) => (
               <Starred>
                 <OwnerAvatar source={{ uri: item.owner.avatar_url }} />
