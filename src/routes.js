@@ -15,7 +15,7 @@ export default function Routes() {
         screenOptions={{
           headerTintColor: '#FFF',
           headerStyle: {
-            backgroundColor: '#9159c1',
+            backgroundColor: '#7159c1',
           },
           headerTitleAlign: 'center',
         }}
