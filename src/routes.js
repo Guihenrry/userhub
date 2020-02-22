@@ -10,8 +10,23 @@ const Stack = createStackNavigator();
 export default function Routes() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Main">
-        <Stack.Screen name="Main" component={Main} />
+      <Stack.Navigator
+        initialRouteName="Main"
+        screenOptions={{
+          headerTintColor: '#FFF',
+          headerStyle: {
+            backgroundColor: '#9159c1',
+          },
+          headerTitleAlign: 'center',
+        }}
+      >
+        <Stack.Screen
+          options={{
+            title: 'Usuários',
+          }}
+          name="Main"
+          component={Main}
+        />
         <Stack.Screen name="User" component={User} />
       </Stack.Navigator>
     </NavigationContainer>
