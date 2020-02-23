@@ -11,9 +11,7 @@
 
 Aplicação que permite cadastrar usuarios do GitHub e ver seus repositorios favoritos.
 
-![screenshot-main](screenshot-main.png)
-![screenshot-user](screenshot-user.png)
-![screenshot-repository](screenshot-repository.png)
+![screenshot-main](screenshot.jpg)
 
 ## :information_source: Como execultar
 Para testar esta aplicação você precisará utilizar um emulador ou execultar em seu dispositivos fisico. [Tutorial para configurar ambiente react native](https://nodejs.org/en/)
