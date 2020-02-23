@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ActivityIndicator } from 'react-native';
+import { ActivityIndicator, Button } from 'react-native';
 import PropTypes from 'prop-types';
 import api from '../../services/api';
 
@@ -35,6 +35,9 @@ export default class User extends Component {
           avatar: PropTypes.string,
         }),
       }),
+    }).isRequired,
+    navigation: PropTypes.shape({
+      navigate: PropTypes.func,
     }).isRequired,
   };
 
@@ -77,7 +80,7 @@ export default class User extends Component {
   };
 
   render() {
-    const { route } = this.props;
+    const { route, navigation } = this.props;
     const { user } = route.params;
 
     const { stars, loading, refreshing } = this.state;
@@ -96,11 +99,16 @@ export default class User extends Component {
           <Stars
             data={stars}
             KeyExtractor={star => String(star.id)}
+            onEndReachedThreshold={0.2}
             onEndReached={this.loadMore}
             onRefresh={this.refreshList}
             refreshing={refreshing}
             renderItem={({ item }) => (
-              <Starred>
+              <Starred
+                onPress={() =>
+                  navigation.navigate('Repository', { repository: item })
+                }
+              >
                 <OwnerAvatar source={{ uri: item.owner.avatar_url }} />
                 <Info>
                   <Title>{item.name}</Title>
