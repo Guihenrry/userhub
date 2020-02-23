@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ActivityIndicator, Button } from 'react-native';
+import { ActivityIndicator } from 'react-native';
 import PropTypes from 'prop-types';
 import api from '../../services/api';
 
@@ -20,9 +20,9 @@ import {
 export default class User extends Component {
   state = {
     stars: [],
-    loading: false,
-    page: 1,
+    loading: true,
     refreshing: false,
+    page: 1,
   };
 
   static propTypes = {
@@ -42,41 +42,36 @@ export default class User extends Component {
   };
 
   async componentDidMount() {
-    const { route } = this.props;
-    const { user } = route.params;
-
-    this.setState({ loading: true });
-
-    const response = await api.get(`/users/${user.login}/starred`);
-
-    this.setState({ stars: response.data, loading: false });
+    this.load();
   }
 
-  loadMore = async () => {
+  load = async (page = 1) => {
     const { route } = this.props;
     const { user } = route.params;
-    const { page, stars } = this.state;
+    const { stars } = this.state;
 
     const response = await api.get(`/users/${user.login}/starred`, {
-      params: {
-        page: page + 1,
-      },
+      params: { page },
     });
 
-    if (response.data) {
-      this.setState({ page: page + 1, stars: [...stars, ...response.data] });
-    }
+    this.setState({
+      loading: false,
+      stars: page > 1 ? [...stars, ...response.data] : response.data,
+      refreshing: false,
+      page,
+    });
+  };
+
+  loadMore = async () => {
+    const { page } = this.state;
+
+    const nextPage = page + 1;
+
+    this.load(nextPage);
   };
 
   refreshList = async () => {
-    const { route } = this.props;
-    const { user } = route.params;
-
-    this.setState({ refreshing: true });
-
-    const response = await api.get(`/users/${user.login}/starred`);
-
-    this.setState({ stars: response.data, refreshing: false });
+    this.setState({ stars: [], refreshing: true }, this.load);
   };
 
   render() {
