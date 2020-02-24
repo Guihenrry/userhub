@@ -7,11 +7,13 @@
 
 </h3>
 
-## :rocket: Sobre a aplicação
+## :octocat: Sobre a aplicação
 
 Aplicação que permite cadastrar usuarios do GitHub e ver seus repositorios favoritos.
 
-![screenshot-main](screenshot.jpg)
+### Demo
+
+![demo](demo.gif)
 
 ## :information_source: Como execultar
 Para testar esta aplicação você precisará utilizar um emulador ou execultar em seu dispositivos fisico. [Tutorial para configurar ambiente react native](https://nodejs.org/en/)
